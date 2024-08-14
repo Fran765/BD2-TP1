@@ -2,17 +2,17 @@ package org.example.model;
 
 import java.util.Objects;
 
-public class Producto {
+public class Product {
 
     private Integer id;
     private String description;
-    private Categoria categoria;
-    private Marca marca;
-    private float price;
+    private Category category;
+    private Brand brand;
+    private double price;
 
-    public Producto(Integer id, String description, Categoria categoria, Marca marca, float price) {
+    public Product(Integer id, String description, Category category, Brand brand, double price) {
         Objects.requireNonNull(description);
-        Objects.requireNonNull(categoria);
+        Objects.requireNonNull(category);
         Objects.requireNonNull(price);
 
         if(description.isEmpty())
@@ -23,16 +23,16 @@ public class Producto {
 
         this.id = id;
         this.description = description;
-        this.categoria = categoria;
-        this.marca = marca;
+        this.category = category;
+        this.brand = brand;
         this.price = price;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public Marca getMarca(){
-        return marca;
+    public boolean isBrand(Brand aPotentialBrand){
+        return this.brand.equals(aPotentialBrand);
     }
 }
