@@ -1,7 +1,7 @@
 package org.example.model;
 
-import org.example.service.CardValidateService;
-import org.example.service.ProductMapperService;
+import org.example.infrastructure.ByWebValidatedCard;
+import org.example.servcies.ProductMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,16 +10,25 @@ import java.util.stream.Stream;
 
 public class Business {
 
-    private final ProductMapperService productMapperService;
-    private final CardValidateService cardValidateService;
+    private final ProductMapper productMapper;
+    private final ByWebValidatedCard byWebCardValidateService;
     private List<ProductDiscount> productDiscounts;
     private List<BuyDiscount> purchaseDiscounts;
 
-    public Business(ProductMapperService productMapperService, CardValidateService cardValidateService) {
-        this.productMapperService = productMapperService;
-        this.cardValidateService = cardValidateService;
+    public Business(ProductMapper productMapper, ByWebValidatedCard byWebCardValidateService) {
+        this.productMapper = productMapper;
+        this.byWebCardValidateService = byWebCardValidateService;
+        this.productDiscounts = new ArrayList<>();
+        this.purchaseDiscounts = new ArrayList<>();
     }
 
+    public void addProductDiscount(ProductDiscount productDiscount) {
+        this.productDiscounts.add(productDiscount);
+    }
+
+    public void addBuyDiscount(BuyDiscount buyDiscount) {
+        this.purchaseDiscounts.add(buyDiscount);
+    }
 
     public Sale completPurchase(Card card, ShoppingCart cart) {
 
@@ -31,7 +40,7 @@ public class Business {
         if (!this.purchaseDiscounts.isEmpty())
             total = this.applyDiscounts(card, total);
 
-        if (!this.cardValidateService.validateCard(card, total))
+        if (!this.byWebCardValidateService.validateCard(card, total))
             throw new RuntimeException("La tarjeta no esta activa o no tiene fondos suficientes");
 
         card.subtractFunds(total);
@@ -53,7 +62,7 @@ public class Business {
         Stream<Product> productsInTheCart = cart.getProducts();
 
         productsInTheCart.forEach(product ->
-                soldProducts.add(productMapperService.convertProductToProductSale(product))
+                soldProducts.add(productMapper.convertProductToProductSale(product))
         );
 
         return soldProducts;

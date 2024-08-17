@@ -1,11 +1,11 @@
-package org.example.service;
+package org.example.servcies;
 
 import org.example.model.Product;
 import org.example.model.ProductSale;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface ProductMapperService {
+public interface ProductMapper {
 
     ProductSale convertProductToProductSale(Product product);
 }

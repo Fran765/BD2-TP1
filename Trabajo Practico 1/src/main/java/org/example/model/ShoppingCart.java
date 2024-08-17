@@ -10,8 +10,9 @@ public class ShoppingCart {
     private List<Product> products;
     private Client client;
 
-    public ShoppingCart() {
+    public ShoppingCart(Client client) {
         this.products = new ArrayList<Product>();
+        this.client = client;
     }
 
     public void aadProduct(Product pruduct) {
