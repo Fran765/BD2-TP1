@@ -13,7 +13,7 @@ public class Client {
 
     public Client(Integer dni, String name, String surname, String email, List<Card> cards) {
 
-        this.validateAttribute(dni.toString());
+        this.validateAttribute(String.valueOf(dni));
         this.validateAttribute(name);
         this.validateAttribute(surname);
         this.validateEmail(email);
@@ -30,10 +30,10 @@ public class Client {
             throw new RuntimeException("Esta tarjeta ya existe para este cliente.");
     }
 
-    private void validateAttribute(String dni){
-        Objects.requireNonNull(dni);
+    private void validateAttribute(String attribute){
+        Objects.requireNonNull(attribute);
 
-        if (dni.isEmpty() || dni.isBlank())
+        if (attribute.isEmpty() || attribute.isBlank())
             throw new RuntimeException("El campo no puede esta vacio.");
     }
 

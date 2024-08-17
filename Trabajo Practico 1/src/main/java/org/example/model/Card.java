@@ -1,16 +1,26 @@
 package org.example.model;
 
 public class Card {
-    private Integer number;
+
+    private Long number;
     private CardType type;
     private boolean activate;
-    private float funds;
+    private double funds;
 
-    public Card(Integer number, CardType type, boolean activate, float funds) {
+    public Card(Long number, CardType type) {
+
+        this.validateNumbers(String.valueOf(number));
+
         this.number = number;
         this.type = type;
-        this.activate = activate;
-        this.funds = funds;
+        this.activate = true;
+        this.funds = 0.0;
+    }
+
+    private void validateNumbers(String numeroTarjeta) {
+        String tarjetaSinEspacios = numeroTarjeta.replaceAll("\\s+", "");
+        if (!tarjetaSinEspacios.matches("\\d+") || (tarjetaSinEspacios.length() != 16))
+            throw new RuntimeException("Numeros de tarjeta invalidos.");
     }
 
     public boolean isActivate() {
@@ -21,13 +31,19 @@ public class Card {
         return this.type.equals(aPotentialType);
     }
 
-    public void addFunds(float funds){
+    public void addFunds(double funds) {
         this.funds += funds;
     }
 
-    public void subtractFunds(float funds){
-        if(this.funds <= funds)
+    public void subtractFunds(double funds) {
+        if (this.funds <= funds)
             throw new RuntimeException("saldo insuficiente en la tarjeta.");
         this.funds -= funds;
     }
+
+    public boolean sufficientBalance(double amount) {
+        return (this.funds < amount);
+    }
+
+
 }

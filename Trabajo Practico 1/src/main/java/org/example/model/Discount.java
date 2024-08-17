@@ -14,19 +14,18 @@ public abstract class Discount {
         this.endDate = endDate;
     }
 
-    private void validateDates(LocalDate startDate, LocalDate endDate){
-        if(startDate.equals(endDate))
+    private void validateDates(LocalDate startDate, LocalDate endDate) {
+        if (startDate.equals(endDate))
             throw new RuntimeException("las fechas del descuento no pueden er iguales");
 
-        if(startDate.isAfter(endDate))
+        if (startDate.isAfter(endDate))
             throw new RuntimeException("La fecha de inicio no puede ser mayor que la ficha de fin.");
 
     }
 
-
     public abstract double applyDiscount(double price);
 
-    public boolean isOnDate(){
+    public boolean isOnDate() {
         LocalDate now = LocalDate.now();
         return (now.isEqual(startDate) || now.isAfter(startDate)) && now.isBefore(endDate);
     }
