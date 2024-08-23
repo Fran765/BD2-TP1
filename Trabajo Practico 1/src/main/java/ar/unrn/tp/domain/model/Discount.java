@@ -1,4 +1,4 @@
-package org.example.model;
+package ar.unrn.tp.domain.model;
 
 import java.time.LocalDate;
 
@@ -16,14 +16,16 @@ public abstract class Discount {
 
     private void validateDates(LocalDate startDate, LocalDate endDate) {
         if (startDate.equals(endDate))
-            throw new RuntimeException("las fechas del descuento no pueden er iguales");
+            throw new RuntimeException("Las fechas del descuento no pueden ser iguales.");
 
         if (startDate.isAfter(endDate))
             throw new RuntimeException("La fecha de inicio no puede ser mayor que la ficha de fin.");
 
     }
 
-    public abstract double applyDiscount(double price);
+    public double applyDiscount(double price) {
+        return price * (1 - this.percent / 100);
+    }
 
     public boolean isOnDate() {
         LocalDate now = LocalDate.now();

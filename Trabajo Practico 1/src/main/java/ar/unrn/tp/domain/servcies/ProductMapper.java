@@ -1,7 +1,7 @@
-package org.example.servcies;
+package ar.unrn.tp.domain.servcies;
 
-import org.example.model.Product;
-import org.example.model.ProductSale;
+import ar.unrn.tp.domain.model.Product;
+import ar.unrn.tp.domain.model.ProductSale;
 import org.mapstruct.Mapper;
 
 @Mapper

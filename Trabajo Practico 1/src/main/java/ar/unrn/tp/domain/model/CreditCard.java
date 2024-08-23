@@ -1,13 +1,13 @@
-package org.example.model;
+package ar.unrn.tp.domain.model;
 
-public class Card {
+public class CreditCard {
 
     private Long number;
     private CardType type;
     private boolean activate;
     private double funds;
 
-    public Card(Long number, CardType type) {
+    public CreditCard(Long number, CardType type) {
 
         this.validateNumbers(String.valueOf(number));
 

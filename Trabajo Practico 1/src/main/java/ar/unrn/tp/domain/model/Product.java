@@ -1,4 +1,4 @@
-package org.example.model;
+package ar.unrn.tp.domain.model;
 
 import java.util.Objects;
 
