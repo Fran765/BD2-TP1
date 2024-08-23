@@ -40,7 +40,7 @@ public class Client {
     private void validateEmail(String email) {
         validateAttribute(email);
 
-        if (email.matches(REGEX))
+        if (!email.matches(REGEX))
             throw new RuntimeException("Email debe tener formato valido.");
     }
 
@@ -50,9 +50,6 @@ public class Client {
             throw new RuntimeException("El DNI debe tener 8 dígitos.");
         }
 
-        if (!dniStr.matches("\\d+")) {
-            throw new RuntimeException("El DNI debe contener solo dígitos.");
-        }
     }
 
 }

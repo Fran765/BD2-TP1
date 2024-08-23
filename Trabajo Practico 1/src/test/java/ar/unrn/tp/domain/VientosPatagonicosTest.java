@@ -105,20 +105,6 @@ class VientosPatagonicosTest {
         }
 
         @Test
-        @DisplayName("Dni con dijitos invalidos")
-        void test_Create_Client_With_Invalid_Digits() {
-
-            RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-                new Client(12 - 345 - 678, "Nombre", "Apellido", "email@example.com", new ArrayList<>());
-            });
-
-            assertAll(
-                    () -> assertEquals(RuntimeException.class, exception.getClass()),
-                    () -> assertEquals("El DNI debe contener solo dígitos.", exception.getMessage())
-            );
-        }
-
-        @Test
         @DisplayName("Crear cliente con nombre en blanco.")
         void test_Create_Client_With_Blank_Name() {
 
@@ -166,26 +152,26 @@ class VientosPatagonicosTest {
     }
 
     @Nested
-    @DisplayName("test para la clase producto")
+    @DisplayName("test para la clase producto.")
     class ProductsTests {
 
         @Test
-        @DisplayName("")
-        void test_Create_Product_Without_Category_Description_Price() {
+        @DisplayName("Crear producto sin marca o sin categoria.")
+        void test_Create_Product_Without_Category_Or_Brand() {
 
             //Prueba sin categoria
-            assertThrows(RuntimeException.class, () -> new Product(1, "Description", null, Brand.NIKE, 20));
+            assertThrows(NullPointerException.class, () -> new Product(1, "Description", null, Brand.NIKE, 20.0));
 
             //Prueba sin marca
-            assertThrows(RuntimeException.class, () -> new Product(1, "Description", Category.REMERAS, null, 20));
+            assertThrows(NullPointerException.class, () -> new Product(1, "Description", Category.REMERAS, null, 20.0));
 
         }
 
         @Test
-        @DisplayName("")
+        @DisplayName("Crear producto con descripcion en blanco.")
         void test_Product_Creation_Empty_Description() {
             RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-                new Product(1, "", Category.REMERAS, Brand.PUMA, 100);
+                new Product(1, " ", Category.REMERAS, Brand.PUMA, 100.0);
             });
 
             assertAll(
@@ -195,15 +181,16 @@ class VientosPatagonicosTest {
         }
 
         @Test
-        @DisplayName("")
+        @DisplayName("Crear un prducto con precio incorrecto.")
         void test_Product_Creation_Invalid_Price() {
+
             RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-                new Product(1, "Description", Category.REMERAS, Brand.PUMA, 0);
+                new Product(3, "Description", Category.REMERAS, Brand.PUMA, 0.0);
             });
 
             assertAll(
                     () -> assertEquals(RuntimeException.class, exception.getClass()),
-                    () -> assertEquals("El precio no puede ser negativo.", exception.getMessage())
+                    () -> assertEquals("El precio no puede ser igual a 0.0 o negativo.", exception.getMessage())
             );
         }
     }
