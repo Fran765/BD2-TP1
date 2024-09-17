@@ -27,8 +27,8 @@ public abstract class Discount {
         return price * (1 - this.percent / 100);
     }
 
-    public boolean isOnDate() {
-        LocalDate now = LocalDate.now();
-        return (now.isEqual(startDate) || now.isAfter(startDate)) && now.isBefore(endDate);
+    protected boolean isOnDate() {
+        LocalDate today = LocalDate.now();
+        return !today.isBefore(startDate) && !today.isAfter(endDate);
     }
 }

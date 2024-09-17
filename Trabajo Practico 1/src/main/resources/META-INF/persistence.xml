@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://java.sun.com/xml/ns/persistence"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
 
@@ -9,10 +9,11 @@
         <provider>com.objectdb.jpa.Provider</provider>
         <properties>
             <property name="javax.persistence.jdbc.url"
-                      value="/home/enrique/unrn/bdII/objectdbs/testobjectdb.odb" />
-            <property name="javax.persistence.jdbc.user" value="admin" />
+                      value="C:/Users/franm/OneDrive/Escritorio/BaseDatosII/objectdbs/testobjectdb.odb"/>
+
+            <property name="javax.persistence.jdbc.user" value="admin"/>
             <property name="javax.persistence.jdbc.password"
-                      value="admin" />
+                      value="admin"/>
         </properties>
     </persistence-unit>
 

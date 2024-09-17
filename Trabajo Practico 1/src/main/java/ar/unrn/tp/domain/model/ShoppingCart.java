@@ -1,24 +1,21 @@
 package ar.unrn.tp.domain.model;
 
-import ar.unrn.tp.domain.servcies.ProductMapper;
-import ar.unrn.tp.domain.servcies.ValidatedCard;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class ShoppingCart {
 
-    private final ValidatedCard validateCardService;
-    private final ProductMapper productMapper;
     private List<Product> products;
     private Client client;
 
-    public ShoppingCart(Client client, ValidatedCard validatedCardService, ProductMapper productMapper) {
-        this.products = new ArrayList<Product>();
+    public ShoppingCart(Client client) {
+        this.products = new ArrayList<>();
         this.client = client;
-        this.validateCardService = validatedCardService;
-        this.productMapper = productMapper;
+    }
+
+    public ShoppingCart() {
+        this.products = new ArrayList<>();
     }
 
     public Stream<Product> getProducts() {
@@ -29,69 +26,28 @@ public class ShoppingCart {
         return this.client;
     }
 
-    public void aadProduct(Product pruduct) {
+    public void addProduct(Product pruduct) {
         this.products.add(pruduct);
     }
 
-    public void removeProduct(Product product) {
-        try {
-            if (!this.products.isEmpty() && this.products.contains(product))
-                this.products.remove(product);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("No se puede quitar productos porque el carrito no tiene");
-        }
-    }
 
     public double totalPriceWithDiscount(List<ProductDiscount> discountsProduct) {
 
-        this.extracted();
+        this.productsIsEmpty();
 
-        double totalPrice = this.totalPriceWithoutDiscount();
+        if (discountsProduct.isEmpty())
+            return this.totalPriceWithoutDiscount();
 
-        for (Product product : products) {
-            totalPrice += applyDiscountCard(product, discountsProduct);
-        }
-        return totalPrice;
+        return products.stream().mapToDouble(p ->
+                applyDiscountProduct(p, discountsProduct)).sum();
     }
 
     public double totalPriceWithoutDiscount() {
-
-        this.extracted();
-
-        double total = 0.0;
-        for (Product product : products) {
-            total += product.getPrice();
-        }
-
-        return total;
+        this.productsIsEmpty();
+        return products.stream().mapToDouble(p -> p.getPrice()).sum();
     }
 
-    public Sale completPurchase(List<ProductDiscount> discountsProduct, List<BuyDiscount> purchaseDiscounts, CreditCard card) {
-
-        double totalPrice = this.applyDiscountCard(
-                purchaseDiscounts,
-                card,
-                this.totalPriceWithDiscount(discountsProduct));
-
-        if (!this.validateCardService.validateCard(card, totalPrice))
-            throw new RuntimeException("La tarjeta no esta activa o no tiene fondos suficientes");
-
-        card.subtractFunds(totalPrice);
-        return new Sale(this.client, this.parseProducts(), totalPrice);
-
-    }
-
-    private double applyDiscountCard(List<BuyDiscount> purchaseDiscounts, CreditCard creditCard, double totalPrice) {
-
-        for (BuyDiscount discount : purchaseDiscounts) {
-            if ((discount.isOnDate()) && (discount.isApply(creditCard))) {
-                return discount.applyDiscount(totalPrice);
-            }
-        }
-        return totalPrice;
-    }
-
-    private double applyDiscountCard(Product product, List<ProductDiscount> discountsProduct) {
+    private double applyDiscountProduct(Product product, List<ProductDiscount> discountsProduct) {
 
         double finalPrice = product.getPrice();
 
@@ -103,17 +59,7 @@ public class ShoppingCart {
         return finalPrice;
     }
 
-    private List<ProductSale> parseProducts() {
-        List<ProductSale> soldProducts = new ArrayList<>();
-
-        products.forEach(product ->
-                soldProducts.add(productMapper.convertProductToProductSale(product))
-        );
-
-        return soldProducts;
-    }
-
-    private void extracted() {
+    private void productsIsEmpty() {
         if (this.products.isEmpty())
             throw new RuntimeException("No hay productos en el carrito para calcular el total.");
     }
